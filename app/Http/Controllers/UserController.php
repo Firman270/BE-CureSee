@@ -7,9 +7,7 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    // =========================
     // GET PROFILE
-    // =========================
     public function profile(Request $request)
     {
         /** @var User $user */
@@ -28,7 +26,6 @@ class UserController extends Controller
             'role'       => $user->role,
             'gender'     => $user->gender,
             'age'        => $user->age,
-            'avatar_url'=> $user->avatar_url,
         ]);
     }
 
@@ -60,45 +57,7 @@ class UserController extends Controller
         ]);
     }
 
-    // =========================
-    // UPLOAD AVATAR
-    // =========================
-    public function uploadAvatar(Request $request)
-    {
-        /** @var User $user */
-        $user = $request->auth_user;
-
-        if (!$user) {
-            return response()->json([
-                'error' => 'Pengguna tidak ditemukan'
-            ], 401);
-        }
-
-        $request->validate([
-            'avatar' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-
-        $file = $request->file('avatar');
-
-        $filename = 'avatar_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-
-        // simpan ke public/avatars
-        $file->move(public_path('avatars'), $filename);
-
-        // URL publik
-        $url = url('avatars/' . $filename);
-
-        // simpan ke DB
-        $user->update([
-            'avatar_url' => $url
-        ]);
-
-        return response()->json([
-            'message'    => 'Avatar updated',
-            'avatar_url'=> $url,
-            'user'       => $user
-        ]);
-    }
+    
 }
     {
         return $this->role === 'user';
