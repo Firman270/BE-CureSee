@@ -9,7 +9,10 @@ class UserController extends Controller
 {
     public function profile(Request $request)
 {
+<<<<<<< HEAD
     // user dari middleware
+=======
+>>>>>>> 5c6469d (push kode awal)
     $user = $request->auth_user;
 
     if (!$user) {
@@ -19,10 +22,23 @@ class UserController extends Controller
     }
 
     return response()->json([
+<<<<<<< HEAD
         'message' => 'Success',
         'user' => $user,
     ]);
 }
+=======
+        'id' => $user->id,
+        'email' => $user->email,
+        'name' => $user->name,
+        'role' => $user->role,
+        'gender' => $user->gender,
+        'age' => $user->age,
+        'avatar_url' => $user->avatar_url,
+    ]);
+}
+
+>>>>>>> 5c6469d (push kode awal)
 //UPDATE PROFILE
 public function updateProfile(Request $request)
 {

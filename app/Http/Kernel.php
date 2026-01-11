@@ -35,6 +35,10 @@ class Kernel extends HttpKernel
      */
         protected $routeMiddleware = [
     'firebase.auth' => \app\Http\Middleware\FirebaseAuth::class,
+<<<<<<< HEAD
     // 'admin-only' => \app\Http\Middleware\AdminOnly::class,
+=======
+    'admin-only' => \app\Http\Middleware\AdminOnly::class,
+>>>>>>> 5c6469d (push kode awal)
 ];
 }

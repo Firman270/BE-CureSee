@@ -35,7 +35,14 @@ class AdminAuthController extends Controller
         }
 
         // buat token
+<<<<<<< HEAD
         $token = $admin->createToken('admin-token')->plainTextToken;
+=======
+        return response()->json([
+    'token' => $admin->createToken('admin-token')->plainTextToken,
+    'role' => 'admin'
+]);
+>>>>>>> 5c6469d (push kode awal)
 
         return response()->json([
             'message' => 'Login admin berhasil',
@@ -47,6 +54,11 @@ class AdminAuthController extends Controller
                 'role'  => $admin->role,
             ]
         ]);
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 5c6469d (push kode awal)
     }
 
     public function logout(Request $request)
@@ -57,4 +69,51 @@ class AdminAuthController extends Controller
             'message' => 'Logout berhasil'
         ]);
     }
+<<<<<<< HEAD
+=======
+
+    // LIST SEMUA USER
+    public function index()
+    {
+        $users = User::where('role', 'user')
+            ->select('id', 'name', 'email', 'gender', 'age', 'created_at')
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $users
+        ]);
+    }
+
+    // HAPUS USER
+    public function destroy(Request $request, $id)
+{
+    $admin = $request->auth_user;
+
+    $user = User::where('role', 'user')->find($id);
+
+    if (!$user) {
+        return response()->json([
+            'success' => false,
+            'message' => 'User tidak ditemukan'
+        ], 404);
+    }
+
+    // cegah admin hapus diri sendiri
+    if ($admin && $admin->id === $user->id) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Tidak bisa menghapus akun sendiri'
+        ], 403);
+    }
+
+    $user->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'User berhasil dihapus'
+    ]);
+}
+>>>>>>> 5c6469d (push kode awal)
 }

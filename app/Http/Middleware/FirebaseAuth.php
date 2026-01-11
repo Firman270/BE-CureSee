@@ -41,6 +41,7 @@ Log::info("TOKEN VIA bearerToken(): " . $request->bearerToken());
         $email = $firebaseUser['email'] ?? null;
 
         // cek user
+<<<<<<< HEAD
         $user = User::firstOrCreate(
     ['firebase_uid' => $firebaseUid], // cari berdasarkan UID
     [
@@ -48,6 +49,29 @@ Log::info("TOKEN VIA bearerToken(): " . $request->bearerToken());
         'email' => $email,
     ]
 );
+=======
+       // ===== SYNC USER FIREBASE KE DATABASE =====
+
+// cari user berdasarkan email (UNIQUE)
+$user = User::where('email', $email)->first();
+
+if (!$user) {
+    // user belum ada → create
+    $user = User::create([
+        'firebase_uid' => $firebaseUid,
+        'email'        => $email,
+        'name'         => $email,
+        'role'         => 'user', // default, admin jangan diubah
+    ]);
+} else {
+    // user sudah ada → update UID kalau belum ada
+    if (!$user->firebase_uid) {
+        $user->update([
+            'firebase_uid' => $firebaseUid,
+        ]);
+    }
+}
+>>>>>>> 5c6469d (push kode awal)
 
         // simpan ke request
         $request->merge([
