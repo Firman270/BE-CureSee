@@ -32,9 +32,8 @@ class UserController extends Controller
         ]);
     }
 
-    // =========================
+
     // UPDATE PROFILE
-    // =========================
     public function updateProfile(Request $request)
     {
         /** @var User $user */
@@ -42,16 +41,16 @@ class UserController extends Controller
 
         if (!$user) {
             return response()->json([
-                'error' => 'User tidak ditemukan dari token'
+                'error' => 'Pengguna tidak ditemukan dari token'
             ], 500);
         }
 
-        $validated = $request->validate([
-            'name'   => 'sometimes|string|max:150',
-            'gender' => 'sometimes|in:L,P',
-            'age'    => 'sometimes|integer|min:1|max:100',
-            'avatar_url' => 'sometimes|string', // 🔥 supaya avatar bisa ikut diupdate
-        ]);
+        // VALIDASI INPUT
+    $validated = $request->validate([
+        'name' => 'sometimes|string|max:150',
+        'gender' => 'sometimes|in:L,P',
+        'age' => 'sometimes|integer|min:1|max:100',
+    ]);
 
         $user->update($validated);
 
@@ -71,7 +70,7 @@ class UserController extends Controller
 
         if (!$user) {
             return response()->json([
-                'error' => 'User tidak ditemukan'
+                'error' => 'Pengguna tidak ditemukan'
             ], 401);
         }
 
