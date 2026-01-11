@@ -20,9 +20,7 @@ Route::get('/auth-check', function (Request $request) {
 
 
 //USER PROFILE (Firebase)
-
 Route::middleware('firebase-auth')->group(function () {
-
     Route::get('/profile', [UserController::class, 'profile']);
     Route::put('/profile', [UserController::class, 'updateProfile']);
     Route::post('/profile/avatar', [UserController::class, 'uploadAvatar']);
