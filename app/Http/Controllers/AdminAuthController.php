@@ -13,12 +13,13 @@ class AdminAuthController extends Controller
     // =========================
     public function login(Request $request)
     {
+        // email wajib diisi dan harus format email, password wajib diisi
         $request->validate([
-            'email'    => 'required|email',
+            'email'    => 'required|email', 
             'password' => 'required|string',
         ]);
-
-        // cari admin
+        
+        // cari admin di tabel User dengan role admin
         $admin = User::where('email', $request->email)
             ->where('role', 'admin')
             ->first();
@@ -29,14 +30,14 @@ class AdminAuthController extends Controller
             ], 404);
         }
 
-        // cek password
+        // cek password jadi pasword dari request di bandingkan dengan kode hash dari database
         if (!Hash::check($request->password, $admin->password)) {
             return response()->json([
                 'error' => 'Password salah'
             ], 401);
         }
 
-        // buat token
+        // buat token sebagai security
         $token = $admin->createToken('admin-token')->plainTextToken;
 
         return response()->json([
