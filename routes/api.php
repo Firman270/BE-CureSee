@@ -54,14 +54,13 @@ Route::middleware('firebase-auth')->group(function () {
 
 // ADMIN AUTH
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
-
 Route::middleware(['auth:sanctum', 'admin-only'])->group(function () {
 
     Route::get('/blogs', [BlogController::class, 'tampil']);
     Route::post('/blogs', [BlogController::class, 'tambah']);
-    Route::put('/blogs/{id}', [BlogController::class, 'update']);
-    Route::delete('/blogs/{id}', [BlogController::class, 'hapus']);
+    Route::patch('/blogs/{id}', [BlogController::class, 'update']);
 
+    Route::delete('/blogs/{id}', [BlogController::class, 'hapus']);
     Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
 
     // Admin mengelola akun user
