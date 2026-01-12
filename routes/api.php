@@ -13,6 +13,7 @@ use App\Http\Controllers\HistoryController;
 // AUTH CHECK (Firebase)
 
 
+
 Route::get('/auth-check', function (Request $request) {
     return response()->json([
         'message' => 'Authenticated!',
@@ -42,7 +43,7 @@ Route::middleware('firebase-auth')->group(function () {
 });
 
 
-// HISTORY (Firebase)
+
 Route::middleware('firebase-auth')->group(function () {
 
     Route::post('/history', [HistoryController::class, 'store']);
