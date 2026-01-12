@@ -22,6 +22,7 @@ class FirebaseAuth
         }
 
         try {
+            // 🔥 Verifikasi token ke Firebase
             $response = Http::post(
                 'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' . env('FIREBASE_API_KEY'),
                 ['idToken' => $token]
@@ -40,13 +41,15 @@ class FirebaseAuth
             $firebaseUid = $firebaseUser['localId'];
             $email = $firebaseUser['email'] ?? null;
 
-            // ============================
+            // ==============================
             // SYNC USER FIREBASE KE DATABASE
-            // ============================
+            // ==============================
 
+            // cari user berdasarkan email (UNIQUE)
             $user = User::where('email', $email)->first();
 
             if (!$user) {
+                // user belum ada → create
                 $user = User::create([
                     'firebase_uid' => $firebaseUid,
                     'email'        => $email,
@@ -54,6 +57,7 @@ class FirebaseAuth
                     'role'         => 'user',
                 ]);
             } else {
+                // user sudah ada → update UID kalau belum ada
                 if (!$user->firebase_uid) {
                     $user->update([
                         'firebase_uid' => $firebaseUid,
@@ -61,12 +65,13 @@ class FirebaseAuth
                 }
             }
 
-            // inject ke request
+            // inject user ke request
             $request->merge([
                 'firebase_uid' => $firebaseUid,
                 'auth_user'    => $user,
             ]);
 
+            // logging
             Log::info("🔥 Firebase lookup response", [
                 'status' => $response->status(),
                 'body'   => $response->json()
