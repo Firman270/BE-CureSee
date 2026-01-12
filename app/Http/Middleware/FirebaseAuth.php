@@ -40,16 +40,7 @@ Log::info("TOKEN VIA bearerToken(): " . $request->bearerToken());
         $firebaseUid = $firebaseUser['localId'];
         $email = $firebaseUser['email'] ?? null;
 
-        // cek user
-<<<<<<< HEAD
-        $user = User::firstOrCreate(
-    ['firebase_uid' => $firebaseUid], // cari berdasarkan UID
-    [
-        'name' => $email ?? 'User_' . substr($firebaseUid, 0, 6),
-        'email' => $email,
-    ]
-);
-=======
+
        // ===== SYNC USER FIREBASE KE DATABASE =====
 
 // cari user berdasarkan email (UNIQUE)
@@ -71,7 +62,6 @@ if (!$user) {
         ]);
     }
 }
->>>>>>> 5c6469d (push kode awal)
 
         // simpan ke request
         $request->merge([

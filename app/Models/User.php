@@ -5,27 +5,15 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
-<<<<<<< HEAD
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $table = 'users';
-=======
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users';
 
->>>>>>> 5c6469d (push kode awal)
     protected $fillable = [
         'firebase_uid',
         'email',

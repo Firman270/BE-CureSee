@@ -1,20 +1,15 @@
 <?php
 
-<<<<<<< HEAD
-use app\Http\Controllers\UserController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
-=======
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\SkinAnalysisController;
+use App\Http\Controllers\HistoryController;
 
 // test route tanpa middleware
->>>>>>> 5c6469d (push kode awal)
 Route::get('/auth-check', function (Request $request) {
     return response()->json([
         'message' => 'Authenticated!',
@@ -35,10 +30,7 @@ Route::middleware('firebase-auth')->group(function () {
     Route::get('/profile', [UserController::class, 'profile']);
     Route::put('/profile', [UserController::class, 'updateProfile']);
     Route::post('/profile/avatar', [UserController::class, 'uploadAvatar']);
-<<<<<<< HEAD
 
-});
-=======
 });
 
 Route::middleware('firebase-auth')->group(function () {
@@ -48,6 +40,14 @@ Route::middleware('firebase-auth')->group(function () {
     Route::get('/skin-analysis/{id}', [SkinAnalysisController::class, 'show']);
     
 
+});
+
+
+Route::middleware('firebase-auth')->group(function () {
+
+    Route::post('/history', [HistoryController::class, 'store']);
+    Route::get('/history', [HistoryController::class, 'index']);
+    Route::delete('/history/{analyses_id}', [HistoryController::class, 'destroy']);
 });
 
 
@@ -66,4 +66,3 @@ Route::middleware(['auth:sanctum', 'admin-only'])->group(function () {
     
 });
 
->>>>>>> 5c6469d (push kode awal)
