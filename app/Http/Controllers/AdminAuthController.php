@@ -8,52 +8,40 @@ use App\Models\User;
 
 class AdminAuthController extends Controller
 {
-    // =========================
-    // ADMIN LOGIN
-    // =========================
     public function login(Request $request)
-    {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required|string',
+    ]);
 
-        // cari admin
-        $admin = User::where('email', $request->email)
-            ->where('role', 'admin')
-            ->first();
+    $admin = User::where('email', $request->email)
+        ->where('role', 'admin')
+        ->first();
 
-        if (!$admin) {
-            return response()->json([
-                'error' => 'Admin tidak ditemukan'
-            ], 404);
-        }
-
-        // cek password
-        if (!Hash::check($request->password, $admin->password)) {
-            return response()->json([
-                'error' => 'Password salah'
-            ], 401);
-        }
-
-        // buat token
-        $token = $admin->createToken('admin-token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Login admin berhasil',
-            'token'   => $token,
-            'user'    => [
-                'id'    => $admin->id,
-                'email' => $admin->email,
-                'name'  => $admin->name,
-                'role'  => $admin->role,
-            ]
-        ]);
+    if (!$admin) {
+        return response()->json(['error' => 'Admin tidak ditemukan'], 404);
     }
 
-    // =========================
-    // ADMIN LOGOUT
-    // =========================
+    if (!Hash::check($request->password, $admin->password)) {
+        return response()->json(['error' => 'Password salah'], 401);
+    }
+
+    $token = $admin->createToken('admin-token')->plainTextToken;
+
+    return response()->json([
+        'message' => 'Login admin berhasil',
+        'token'   => $token,
+        'user'    => [
+            'id'    => $admin->id,
+            'email' => $admin->email,
+            'name'  => $admin->name,
+            'role'  => $admin->role,
+        ]
+    ]);
+}
+
+
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -63,9 +51,7 @@ class AdminAuthController extends Controller
         ]);
     }
 
-    // =========================
     // LIST SEMUA USER
-    // =========================
     public function index()
     {
         $users = User::where('role', 'user')
@@ -79,36 +65,33 @@ class AdminAuthController extends Controller
         ]);
     }
 
-    // =========================
     // HAPUS USER
-    // =========================
     public function destroy(Request $request, $id)
-    {
-        /** @var User $admin */
-        $admin = $request->auth_user;
+{
+    $admin = $request->auth_user;
 
-        $user = User::where('role', 'user')->find($id);
+    $user = User::where('role', 'user')->find($id);
 
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User tidak ditemukan'
-            ], 404);
-        }
-
-        // cegah admin hapus diri sendiri
-        if ($admin && $admin->id === $user->id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tidak bisa menghapus akun sendiri'
-            ], 403);
-        }
-
-        $user->delete();
-
+    if (!$user) {
         return response()->json([
-            'success' => true,
-            'message' => 'User berhasil dihapus'
-        ]);
+            'success' => false,
+            'message' => 'User tidak ditemukan'
+        ], 404);
     }
+
+    // cegah admin hapus diri sendiri
+    if ($admin && $admin->id === $user->id) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Tidak bisa menghapus akun sendiri'
+        ], 403);
+    }
+
+    $user->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'User berhasil dihapus'
+    ]);
+}
 }
