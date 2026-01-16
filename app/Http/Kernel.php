@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http;
+dd('INI KERNEL YANG TERPAKAI');
+
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -31,8 +33,8 @@ class Kernel extends HttpKernel
     /**
      * Route middleware
      */
-    protected $routeMiddleware = [
-        'firebase-auth' => \App\Http\Middleware\FirebaseAuth::class,
-        'admin-only'    => \App\Http\Middleware\AdminOnly::class,
-    ];
+        protected $routeMiddleware = [
+    'firebase.auth' => \app\Http\Middleware\FirebaseAuth::class,
+    'admin-only' => \app\Http\Middleware\AdminOnly::class,
+];
 }

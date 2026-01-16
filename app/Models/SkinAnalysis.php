@@ -14,7 +14,6 @@ class SkinAnalysis extends Model
 
     protected $fillable = [
         'user_id',
-        'disease_id',
         'image_url',
         'result_text',
         'confidence_score',
@@ -26,13 +25,5 @@ class SkinAnalysis extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    /**
-     * ANALYSIS → BELONGS TO DISEASE
-     */
-    public function disease()
-    {
-        return $this->belongsTo(SkinDisease::class, 'disease_id');
     }
 }

@@ -22,7 +22,6 @@ class FirebaseAuth
         }
 
         try {
-            // 🔥 Verifikasi token ke Firebase
             $response = Http::post(
                 'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' . env('FIREBASE_API_KEY'),
                 ['idToken' => $token]
@@ -37,51 +36,38 @@ class FirebaseAuth
             if (!$firebaseUser || !isset($firebaseUser['localId'])) {
                 return response()->json(['error' => 'Invalid token structure'], 401);
             }
+            $emailVerified = $firebaseUser['emailVerified'] ?? false;
+
+            if (!$emailVerified) {
+                return response()->json([
+                    'error' => 'Email belum diverifikasi'
+                ], 403);
+            }
+
 
             $firebaseUid = $firebaseUser['localId'];
             $email = $firebaseUser['email'] ?? null;
 
-            // ==============================
-            // SYNC USER FIREBASE KE DATABASE
-            // ==============================
-
-            // cari user berdasarkan email (UNIQUE)
+            // ✅ HANYA AMBIL USER (JANGAN CREATE)
             $user = User::where('email', $email)->first();
 
-            if (!$user) {
-                // user belum ada → create
-                $user = User::create([
-                    'firebase_uid' => $firebaseUid,
-                    'email'        => $email,
-                    'name'         => $email ?? ('User_' . substr($firebaseUid, 0, 6)),
-                    'role'         => 'user',
-                ]);
-            } else {
-                // user sudah ada → update UID kalau belum ada
-                if (!$user->firebase_uid) {
-                    $user->update([
-                        'firebase_uid' => $firebaseUid,
-                    ]);
-                }
-            }
-
-            // inject user ke request
+            // inject ke request
             $request->merge([
-                'firebase_uid' => $firebaseUid,
-                'auth_user'    => $user,
+                'firebase_uid'      => $firebaseUid,
+                'firebase_email'    => $email,
+                'firebase_verified' => $emailVerified,
+                'auth_user'         => $user, // boleh null
             ]);
 
-            // logging
-            Log::info("🔥 Firebase lookup response", [
-                'status' => $response->status(),
-                'body'   => $response->json()
+            Log::info("🔥 Firebase lookup success", [
+                'uid' => $firebaseUid,
+                'email' => $email,
+                'verified' => $emailVerified,
             ]);
-
-            Log::info("UID Extracted: " . $firebaseUid);
 
         } catch (\Exception $e) {
             Log::error("🔥 REAL ERROR: " . $e->getMessage());
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Firebase auth failed'], 500);
         }
 
         return $next($request);
