@@ -1,59 +1,207 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+---
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Curesee Backend – REST API Kesehatan Digital
 
-## About Laravel
+Curesee Backend adalah layanan **RESTful API** berbasis **Laravel** yang berfungsi sebagai tulang punggung sistem Curesee. Backend ini menangani autentikasi, pengelolaan data pengguna, riwayat kesehatan, serta komunikasi antara aplikasi mobile Flutter, sistem machine learning, dan layanan eksternal lainnya.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Backend dikembangkan dengan fokus pada **keamanan, skalabilitas, dan keterpisahan logika bisnis**, sehingga mudah dikembangkan dan dipelihara dalam jangka panjang.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🌐 Gambaran Umum
 
-## Learning Laravel
+Aplikasi Curesee membutuhkan sistem backend yang andal untuk mengelola data kesehatan pengguna secara terstruktur dan aman. Backend ini menyediakan API yang digunakan oleh aplikasi mobile untuk:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+* Autentikasi dan otorisasi pengguna
+* Penyimpanan dan pengambilan data kesehatan
+* Pengelolaan riwayat deteksi penyakit kulit
+* Manajemen peran pengguna (user & admin)
+* Integrasi dengan Firebase dan sistem machine learning
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Semua komunikasi data dilakukan menggunakan format **JSON** melalui protokol **HTTP/HTTPS**.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🎯 Permasalahan yang Diselesaikan
 
-### Premium Partners
+Backend Curesee dikembangkan untuk menjawab beberapa tantangan berikut:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+* Pengelolaan data kesehatan yang aman dan terstruktur
+* Kebutuhan API yang konsisten untuk aplikasi mobile
+* Pemisahan logika bisnis agar sistem mudah dikembangkan
+* Skalabilitas sistem untuk pengembangan fitur lanjutan
+* Integrasi lintas sistem (Flutter, Firebase, Machine Learning)
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 💡 Fitur Utama Backend
 
-## Code of Conduct
+Backend Curesee menyediakan berbagai fitur inti, antara lain:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+* RESTful API berbasis Laravel
+* Autentikasi pengguna menggunakan Firebase UID
+* Manajemen data pengguna dan profil kesehatan
+* Penyimpanan dan pengelolaan riwayat deteksi penyakit kulit
+* Manajemen data admin dan pengguna
+* Validasi dan sanitasi data input
+* Struktur kode berbasis Service & Repository Pattern
+* Dukungan pengembangan API lanjutan dan integrasi eksternal
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🧑‍💼 Peran Pengguna
 
-## License
+Backend Curesee mendukung pemisahan peran pengguna:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* **User**
+
+  * Mengakses profil kesehatan
+  * Melihat riwayat deteksi penyakit kulit
+  * Mengirim data hasil analisis gambar
+
+* **Admin**
+
+  * Mengelola data pengguna
+  * Monitoring data dan sistem
+  * Validasi dan pengelolaan konten
+
+---
+
+## 🏗️ Arsitektur Backend
+
+Backend Curesee dirancang dengan pendekatan **Clean Architecture & Layered Architecture** untuk menjaga keterpisahan tanggung jawab.
+
+Lapisan utama:
+
+* **Controller / Handler**
+  Menangani request & response HTTP
+
+* **Service Layer**
+  Berisi logika bisnis utama aplikasi
+
+* **Repository Layer**
+  Abstraksi akses database
+
+* **Model (Eloquent ORM)**
+  Representasi tabel database
+
+Pendekatan ini membuat backend:
+
+* Mudah diuji
+* Mudah dikembangkan
+* Minim coupling antar modul
+
+---
+
+## 🔗 API dan Integrasi
+
+* RESTful API berbasis Laravel
+* Format data: JSON
+* Autentikasi: Firebase Authentication
+* Database: MySQL
+* Integrasi dengan aplikasi Flutter sebagai client utama
+* Dukungan integrasi machine learning (hasil prediksi disimpan sebagai data)
+
+---
+
+## 🚀 Instalasi dan Konfigurasi
+
+### Prasyarat
+
+* PHP ≥ 8.x
+* Composer
+* MySQL / MariaDB
+* Laravel
+* Firebase Project (untuk Authentication)
+
+---
+
+### Langkah Instalasi
+
+```bash
+git clone https://github.com/sony12subagyo/curesee-backend.git
+cd curesee-backend
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+
+---
+
+### Konfigurasi Database
+
+Atur koneksi database pada file `.env`:
+
+```env
+DB_DATABASE=curesee
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Lalu jalankan migration:
+
+```bash
+php artisan migrate
+```
+
+---
+
+## ▶️ Menjalankan Server Backend
+
+```bash
+php artisan serve
+```
+
+Secara default backend akan berjalan di:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+* **Backend Framework**: Laravel
+* **Bahasa Pemrograman**: PHP
+* **Database**: MySQL
+* **ORM**: Eloquent
+* **Autentikasi**: Firebase Authentication
+* **API Style**: RESTful API
+* **Version Control**: Git & GitHub
+
+---
+
+## 📂 Struktur Utama Folder
+
+```text
+app/
+ ├── Http/
+ │   ├── Controllers/    # Controller API
+ │   └── Requests/       # Validasi request
+ ├── Services/           # Logika bisnis
+ ├── Repositories/       # Akses data
+ └── Models/             # Model Eloquent
+routes/
+ └── api.php             # Endpoint API
+database/
+ ├── migrations/         # Struktur database
+ └── seeders/            # Data awal
+```
+
+---
+
+## 🔐 Keamanan
+
+* Validasi input di setiap endpoint
+* Penggunaan Firebase UID untuk autentikasi
+* Pemisahan hak akses user dan admin
+* Proteksi endpoint sensitif
+
+---
+
+## 📄 Lisensi
+
+Backend Curesee merupakan perangkat lunak open-source yang dikembangkan untuk keperluan akademik dan penelitian.
+
+---
