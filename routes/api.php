@@ -22,12 +22,7 @@ Route::middleware('firebase-auth')->post(
 );
 // route yang butuh firebase auth seperti user
 Route::middleware('firebase-auth')->group(function () {
-//      Route::get('/profile', function (Request $request) {
-//          return response()->json([
-//              'message' => 'Token Valid!',
-//              'uid' => $request->attributes->get('firebase_uid')
-//          ]);
-//      });
+    
     Route::get('/blog', [BlogController::class, 'tampilUser']);
 
     Route::get('/profile', [UserController::class, 'profile']);
@@ -49,7 +44,6 @@ Route::middleware(['auth:sanctum', 'admin-only'])->group(function () {
     Route::get('/blogs', [BlogController::class, 'tampil']);
     Route::post('/blogs', [BlogController::class, 'tambah']);
     Route::patch('/blogs/{id}', [BlogController::class, 'update']);
-
     Route::delete('/blogs/{id}', [BlogController::class, 'hapus']);
     Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
 
